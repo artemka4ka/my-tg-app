@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Telegram Mini App</title>
+    <!-- Подключение Telegram Web Apps API -->
+    <script src="https://telegram.org"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Привет, <span id="username">Пользователь</span>!</h1>
+    <p>Это твое первое мини-приложение.</p>
+    <button id="send-btn">Отправить данные боту</button>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+
+        // Сообщаем Telegram, что приложение готово к отображению
+        tg.ready();
+
+        // Расширяем приложение на весь экран (опционально)
+        tg.expand();
+
+        // Отображаем имя пользователя из Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
+        }
+
+        // Логика кнопки: отправка данных обратно в чат с ботом
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const data = { message: "Привет из Mini App!" };
+            
+            // Метод отправляет строку обратно боту (работает, только если приложение открыто через KeyboardButton)
+            tg.sendData(JSON.stringify(data)); 
+            
+            // Закрыть мини-приложение
+            tg.close();
+        });
+    </script>
+</body>
+</html>
